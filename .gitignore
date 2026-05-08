@@ -1,0 +1,29 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# outputs
+cws_reviews/
+data/
+tmp/
+tmp_*/
+tmp_cws/
+
+# node artifacts (present in this workspace)
+node_modules/
+.npm-cache/
+
+# build/package artifacts
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# local notes not needed in the public project
+code_guidelines.md
