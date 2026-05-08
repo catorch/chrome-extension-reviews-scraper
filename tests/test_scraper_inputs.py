@@ -21,6 +21,10 @@ class TestScraperInputs(unittest.TestCase):
             "https://chromewebstore.google.com/detail/onetab/chphlpgkkbolifaimnlloiipkdnihall/reviews?hl=en",
         )
 
+    def test_negative_delay_rejected(self) -> None:
+        with self.assertRaisesRegex(ValueError, "delay_s must be >= 0"):
+            cwsreviews.scraper.scrape_reviews([], out_dir="unused", delay_s=-0.1)
+
 
 if __name__ == "__main__":
     unittest.main()

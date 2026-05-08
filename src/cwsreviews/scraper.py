@@ -8,6 +8,7 @@ import json
 import os
 import random
 import re
+import time
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 import urllib.parse
 
@@ -171,6 +172,7 @@ def scrape_reviews(
     sort: str = "recent",
     stars: Optional[int] = None,
     page_size: int = 100000,
+    delay_s: float = 1.0,
     include_raw: bool = False,
     get_timeout_s: int = 60,
     post_timeout_s: int = 240,
@@ -188,6 +190,8 @@ def scrape_reviews(
         raise ValueError("sort must be 'recent' or 'helpful'")
     if stars is not None and stars not in (1, 2, 3, 4, 5):
         raise ValueError("stars must be one of 1..5")
+    if delay_s < 0:
+        raise ValueError("delay_s must be >= 0")
 
     sort_int = 2 if sort == "recent" else 1
     retry_cfg = cwsreviews.http.RetryConfig(retries=retries)
@@ -196,7 +200,10 @@ def scrape_reviews(
     session = cwsreviews.http.make_session()
 
     results: List[cwsreviews.models.ScrapeResult] = []
-    for input_ref in inputs:
+    for i, input_ref in enumerate(inputs):
+        if i > 0 and delay_s > 0:
+            time.sleep(delay_s)
+
         # 1) Resolve to reviews URL and fetch HTML (follow redirects).
         reviews_url = resolve_input_to_reviews_url(input_ref, hl=hl)
         html, final_url = cwsreviews.http.get_text(

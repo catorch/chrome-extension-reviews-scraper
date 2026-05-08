@@ -50,6 +50,14 @@ def _read_stdin_lines() -> List[str]:
     help="Requested page size.",
 )
 @click.option(
+    "--delay",
+    "delay_s",
+    type=click.FloatRange(min=0.0),
+    default=1.0,
+    show_default=True,
+    help="Seconds to wait between extensions in batch mode.",
+)
+@click.option(
     "--include-raw", is_flag=True, help="Include raw payload per review in JSONL."
 )
 @click.option(
@@ -85,6 +93,7 @@ def cli(
     sort: str,
     stars: Optional[str],
     page_size: int,
+    delay_s: float,
     include_raw: bool,
     get_timeout_s: int,
     post_timeout_s: int,
@@ -114,6 +123,7 @@ def cli(
         sort=sort.lower(),
         stars=stars_int,
         page_size=page_size,
+        delay_s=delay_s,
         include_raw=include_raw,
         get_timeout_s=get_timeout_s,
         post_timeout_s=post_timeout_s,

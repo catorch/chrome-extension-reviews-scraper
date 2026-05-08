@@ -4,6 +4,12 @@
 
 The package installs a descriptive command, `chrome-extension-reviews-scraper`, plus the shorter alias `cwsreviews`.
 
+## Important Disclaimer
+
+This is an unofficial open source tool and is not affiliated with, endorsed by, sponsored by, or supported by Google, Chrome, or the Chrome Web Store. You are responsible for using it lawfully and in compliance with the Chrome Web Store terms, Google policies, privacy rules, and any other obligations that apply to you.
+
+Read the full [Disclaimer and Responsible Use Policy](DISCLAIMER.md) before using this scraper.
+
 ## Features
 
 - Scrape public Chrome Web Store reviews from extension URLs or raw extension IDs.
@@ -11,6 +17,7 @@ The package installs a descriptive command, `chrome-extension-reviews-scraper`, 
 - Save per-extension metadata, including reported totals, fetched count, locale, sort order, and fetch time.
 - Filter reviews by star rating and sort by recent or helpful.
 - Read many extension IDs or URLs from stdin for batch review exports.
+- Use a configurable delay between extension requests for more responsible batch collection.
 - Retry transient Chrome Web Store request failures with backoff.
 
 ## Install
@@ -75,6 +82,7 @@ Common options:
 - `--hl`: Chrome Web Store UI locale. Defaults to `en`.
 - `--sort`: Review sort order, `recent` or `helpful`.
 - `--stars`: Filter to one star rating, `1` through `5`.
+- `--delay`: Seconds to wait between extensions in batch mode. Defaults to `1.0`.
 - `--include-raw`: Include the raw Chrome Web Store review payload in JSONL output.
 - `--strict`: Fail if the number of returned reviews differs from the reported total.
 
@@ -125,7 +133,17 @@ python -m unittest discover -s tests
 
 ## Responsible Use
 
-This project is an unofficial Chrome Web Store reviews scraper and is not affiliated with Google, Chrome, or the Chrome Web Store. It reads publicly accessible review data through the Chrome Web Store consumer UI endpoint. Review and follow the Chrome Web Store terms, applicable laws, and reasonable rate limits before collecting data.
+This project reads publicly accessible review data through Chrome Web Store web UI behavior. That behavior may change, break, throttle, or become unavailable at any time.
+
+Do not use this tool to bypass authentication, access controls, CAPTCHAs, rate limits, technical restrictions, or private/non-public data. Do not use it for spam, harassment, review manipulation, user profiling, or any activity that violates platform rules or user privacy.
+
+Reviews may contain user-generated content and personal information. Handle exported data carefully, minimize retention where possible, and avoid republishing review text, author names, profile photos, or other user data without a valid legal basis.
+
+Review the full [Disclaimer and Responsible Use Policy](DISCLAIMER.md), plus the official Google and Chrome Web Store policies that may apply to your use:
+
+- [Chrome Web Store Developer Agreement](https://developer.chrome.com/docs/webstore/terms/)
+- [Chrome Web Store Program Policies](https://developer.chrome.com/docs/webstore/program-policies/policies)
+- [Chrome Web Store reviews help](https://support.google.com/chrome_webstore/answer/12225786?hl=en)
 
 Some extensions may report a `total` that is slightly larger than the number of reviews returned by the UI endpoint. In that case, `meta.json` records the mismatch. Use `--strict` to fail on mismatches.
 
